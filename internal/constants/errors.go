@@ -1,7 +1,15 @@
 package constants
 
+type (
+	RepoErr string
+)
+
+func (e RepoErr) Error() string {
+	return string(e)
+}
+
 const (
-	ErrUserAlreadyExists   = "user already exists"
-	ErrUserNotFound        = "user not found"
-	ErrUserNotExistingRole = "role does not exist"
+	ErrUserAlreadyExists   = RepoErr("user already exists")
+	ErrUserNotFound        = RepoErr("user not found")
+	ErrUserNotExistingRole = RepoErr("role does not exist")
 )

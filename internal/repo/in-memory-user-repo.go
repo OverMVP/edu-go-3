@@ -1,8 +1,6 @@
 package repo
 
 import (
-	"errors"
-
 	"l3/internal/constants"
 	"l3/internal/entity"
 )
@@ -32,7 +30,7 @@ func (r *InMemoryUserRepo) checkIsNewUser(email string) bool {
 
 func (r *InMemoryUserRepo) Save(user entity.User) error {
 	if !r.checkIsNewUser(user.Email) {
-		return errors.New(constants.ErrUserAlreadyExists)
+		return constants.ErrUserAlreadyExists
 	}
 
 	r.users[user.ID] = user
@@ -52,7 +50,7 @@ func (r *InMemoryUserRepo) FindAll() []entity.User {
 
 func (r *InMemoryUserRepo) DeleteById(id string) error {
 	if _, ok := r.users[id]; !ok {
-		return errors.New(constants.ErrUserNotFound)
+		return constants.ErrUserNotFound
 	}
 
 	delete(r.users, id)
@@ -61,7 +59,7 @@ func (r *InMemoryUserRepo) DeleteById(id string) error {
 
 func (r *InMemoryUserRepo) FindById(id string) (entity.User, error) {
 	if u, ok := r.users[id]; !ok {
-		return entity.User{}, errors.New(constants.ErrUserNotFound)
+		return entity.User{}, constants.ErrUserNotFound
 	} else {
 		return u, nil
 	}
@@ -69,7 +67,7 @@ func (r *InMemoryUserRepo) FindById(id string) (entity.User, error) {
 
 func (r *InMemoryUserRepo) FindByRole(role string) ([]entity.User, error) {
 	if !entity.UserRole(role).Valid() {
-		return nil, errors.New(constants.ErrUserNotExistingRole)
+		return nil, constants.ErrUserNotExistingRole
 	}
 
 	users := make([]entity.User, 0, len(r.users))
