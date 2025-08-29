@@ -21,7 +21,7 @@ func NewUserService(repo entity.UserRepository) *UserService {
 func (s *UserService) GetUser(id string) (entity.User, error) {
 	user, err := s.repo.FindById(id)
 	if err != nil {
-		return entity.User{}, fmt.Errorf("looking for user with id: %s, error: %w", id, err)
+		return entity.User{}, fmt.Errorf("s.repo.FindById(id: %s): %w", id, err)
 	}
 
 	return user, nil
@@ -37,7 +37,7 @@ func (u *UserService) CreateUser(name string, email string, role entity.UserRole
 	}
 
 	if err := u.repo.Save(user); err != nil {
-		return entity.User{}, fmt.Errorf("saving user: %w", err)
+		return entity.User{}, fmt.Errorf("u.repo.Save(user): %w", err)
 	}
 
 	return user, nil
@@ -51,7 +51,7 @@ func (s *UserService) FindByRole(role string) ([]entity.User, error) {
 	uRole := entity.UserRole(role)
 
 	if !uRole.Valid() {
-		return nil, fmt.Errorf("validating role %s, error: %w", role, constants.ErrUserNotExistingRole)
+		return nil, fmt.Errorf("entity.UserRole.Valid() %s, error: %w", role, constants.ErrUserNotExistingRole)
 	}
 
 	users := s.repo.FindAll()
@@ -70,7 +70,7 @@ func (s *UserService) FindByRole(role string) ([]entity.User, error) {
 func (u *UserService) RemoveUser(id string) error {
 	err := u.repo.DeleteById(id)
 	if err != nil {
-		return fmt.Errorf("deleting user with id: %s, error: %w", id, err)
+		return fmt.Errorf("u.repo.DeleteById: %s, error: %w", id, err)
 	}
 
 	return nil
